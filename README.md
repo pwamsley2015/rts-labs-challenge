@@ -30,7 +30,7 @@ I am not a fan of Java Exception Handling in the case where a variable is being 
 1. The variable declaration and intended assignment must be seperated. 
 1. The compiler won't allow reference to the variable after the try/catch if it was *potentially* never initalized, even if proper exception handling makes this impossible. To me, it feels rather ridiculous that `Object var;` won't work, but `Object var = null;` will.
 1. Wrapping assignment in a try/catch block introduces two new scopes, which seems overkill when we're just trying to assign a variable. 
-1. This situation often occurs when a developer doesn't know that the assignment requires exception handling. So, they'll write something like: ```FirebaseOptions options = new FirebaseOptions(...)```. Then my IDE will kindly let me know that I need a try/catch, and even automatically generate it for me: 
+1. This situation often occurs when a developer doesn't know that the assignment requires exception handling. So, they'll write something like: ```FirebaseOptions options = new FirebaseOptions(...)```. Then their IDE will kindly let them know that they need a try/catch, and even automatically generate it: 
 
 ```java
 FirebaseOptions options;
@@ -43,7 +43,7 @@ try {
 
  Now we're back at problem #2. So they need to go back, add the `= null;`, and then get back to using the new object. These interruptions may be trivial, but that's exactly what makes them so frustating. 
 
-All these issues can be addressed by my proposal: A one-liner ```tryNew(Object o, ExceptionHandler<Exception> h)``` method (which could live somewhere like the Objects class) which internally handles exceptional flow control. This approach changes the code to:
+All these issues can be addressed by my proposal: A one-liner method ```tryNew(Object o, ExceptionHandler<Exception> h)```  (that could live somewhere like the Objects class) which internally handles exceptional flow control. This approach changes the code to:
 
 ```java
 FirebaseOptions options = Objects.tryNew(new FirebaseOptions(...), (e -> e.printStackTrace()));
