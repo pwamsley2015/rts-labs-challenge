@@ -25,7 +25,6 @@ public class Problems {
 				above++;
 			}
 		}
-		
 		System.out.println("above: " + above + ", below: " + below);
 	}
 	
@@ -41,7 +40,8 @@ public class Problems {
 		}
 		
 		int safeAmount = amount % original.length();
-		return original.substring(original.length() - safeAmount) + original.substring(0, original.length() - safeAmount);
+		int beginIndex = original.length() - safeAmount;
+		return original.substring(beginIndex) + original.substring(0, beginIndex);
 	}
 	
 	public static void main(String[] args) {
