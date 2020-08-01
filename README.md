@@ -1,6 +1,6 @@
 # RTS Labs Coding Challenge
 
-## Questions 1 & 2 solved in [src/Problems.java](https://github.com/pwamsley2015/rts_labs_challenge)
+## Questions 1 & 2 solved in [src/Problems.java](https://github.com/pwamsley2015/rts-labs-challenge/blob/master/src/Problems.java)
 
 ## Question 3: If you could change 1 thing about your favorite framework/language/platform (pick one), what would it be?
 
@@ -25,12 +25,12 @@ if (options != null) {
 }
 ```
 
-I am not a fan of Java Exception Handleing in the case where a variable is being declared and assigned to a value. Here are my issues: 
+I am not a fan of Java Exception Handling in the case where a variable is being declared and assigned to a newly contructed object. Here are my issues: 
 
 1. The variable declaration and intended assignment must be seperated. 
 1. The compiler won't allow reference to the variable after the try/catch if it was *potentially* never initalized, even if proper exception handling mades this impossible. To me, it feels rather ridicolous that `Object var;` won't work, but `Object var = null;` will.
 1. Wrapping assignment in a try/catch block introduces two new scopes, which seems overkill when we're just trying to assign a variable. 
-1. This situation often occurs when I don't know that my assignment requries exception handling. So I'll write something like: ```FirebaseOptions options = new FirebaseOptions(...).```. Then my IDE will kindly let me know that I need a try/catch, and even automatically generate it for me: 
+1. This situation often occurs when I don't know that my assignment requires exception handling. So, I'll write something like: ```FirebaseOptions options = new FirebaseOptions(...)```. Then my IDE will kindly let me know that I need a try/catch, and even automatically generate it for me: 
 
 ```java
 FirebaseOptions options;
@@ -41,28 +41,24 @@ try {
 }
 ```
 
-Now we're back at problem #2. So I need to go back, add the `= null;`, and then get back to using the new variable. These interuptions may be trivial, but that's exactly what makes them so frustating. 
+ Now we're back at problem #2. So I need to go back, add the `= null;`, and then get back to using the new object. These interuptions may be trivial, but that's exactly what makes them so frustating. 
 
-All these issues can be addressed by my proposal: A one-liner ```java tryNew(Object o, ExceptionHandler<? extends Exception> h)``` method (which could live somewhere like the Objects class) which internally handle the exceptional flow control. Here's what that would look like:
+All these issues can be addressed by my proposal: A one-liner ```tryNew(Object o, ExceptionHandler<Exception> h)``` method (which could live somewhere like the Objects class) which internally handles the exceptional flow control. This approach changes the code to:
 
 ```java
 FirebaseOptions options = Objects.tryNew(new FirebaseOptions(...), (e -> e.printStackTrace()));
 ...
-someMethod(options);
-someOtherMethod(options.anotherMethod());
 ```
 If our situation requries more complex error handling, that's nicely taken care of by the lambda expression, rather than a catch block.
 
 ```java
 FirebaseOptions options = Objects.tryNew(new FirebaseOptions(...), (e -> { 
 								somethingWentWrong();
-								alertMissionControl();
+								alertMissionControl(e);
 								e.printStackTrace();
 							})
 	);
 ...
-someMethod(options);
-someOtherMethod(options.anotherMethod());
 ```
  
-With this approach, exceptional flow control is abstracted away from the *use* of newly contructed objects, without losing any ability to do error handling. No new scopes are introduced *unless* we need one for error handling, and the new object can be used right away without null checks. 
+With this approach, exceptional flow control is abstracted away from the *use* of newly contructed objects, without losing any ability to do error handling. No new scopes are introduced **unless** we really need one for error handling, and the new object can be used right away without a null check. 
