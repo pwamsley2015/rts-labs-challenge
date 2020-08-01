@@ -4,7 +4,7 @@
 
 ## Question 3: If you could change 1 thing about your favorite framework/language/platform (pick one), what would it be?
 
-My favorite language is Java. I’ll admit I have some biases—Java was the first programing language I learned, and I’ve built my coolest projects using Java. So it’s probably not surprising that I sympathize with the popular argument that Java’s static typing and general verbosity leads to less errors (or at least errors that are noticed and understood sooner), easier abstractions, and more readable code. With that said, there are certainly cases where Java forces the developer to roll their eyes as they type out several lines of code to express one simple idea. My one change to Java would be a solution to a particularly frustrating instance of gratuitous verbosity. Let's take a look at some code I recently wrote on a personal project: 
+My favorite language is Java. I’ll admit I have some biases—Java was the first programing language I learned, and I’ve built my coolest projects using Java. So it’s probably not surprising that I sympathize with the popular argument that Java’s static typing and general verbosity leads to less errors, easier abstractions, and more readable code. With that said, there are certainly cases where Java forces the developer to roll their eyes as they type out several lines of code to express one simple idea. My one change to Java would be a solution to a particularly frustrating instance of gratuitous verbosity. Let's take a look at some code I recently wrote on a personal project: 
 
 ```java
 FirebaseOptions options = null;
